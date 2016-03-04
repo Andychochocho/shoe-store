@@ -15,21 +15,21 @@ namespace Program.Objects.Shoes
     _id = id;
     _name = name;
   }
-  // public override bool Equals(System.Object otherStore)
-  // {
-  //   if(!(otherStore is Store))
-  //   {
-  //     return false;
-  //   }
-  //   else
-  //   {
-  //     var newStore = (Store) otherStore;
-  //     bool idEquality = this.GetId() == newStore.GetId();
-  //     bool nameEquality = this.GetName() == newStore.GetName();
-  //
-  //     return (idEquality && nameEquality);
-  //   }
-  // }
+  public override bool Equals(System.Object otherStore)
+  {
+    if(!(otherStore is Store))
+    {
+      return false;
+    }
+    else
+    {
+      var newStore = (Store) otherStore;
+      bool idEquality = this.GetId() == newStore.GetId();
+      bool nameEquality = this.GetName() == newStore.GetName();
+
+      return (idEquality && nameEquality);
+    }
+  }
 
     public int GetId()
     {
@@ -97,6 +97,14 @@ namespace Program.Objects.Shoes
         conn.Close();
       }
       return allStore;
+    }
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM stores;", conn);
+      cmd.ExecuteNonQuery();
     }
   }
 }

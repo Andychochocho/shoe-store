@@ -15,20 +15,31 @@ namespace Program.Objects.Shoes
     [Fact]
     public void Test_CheckIfShoesIsEmpty()
     {
-      int result = Store.GetAll().Count;
+      var result = Store.GetAll().Count;
       Assert.Equal(0, result);
     }
     [Fact]
     public void Test_CheckIfNameIsSame()
     {
-      string storeOne = "Forever 21";
-      string storeTwo = "Forever 21";
+      var storeOne = "Forever 21";
+      var storeTwo = "Forever 21";
       Assert.Equal(storeOne, storeTwo);
+    }
+
+    [Fact]
+    public void Test_Save_CheckIfStoreSavesToDatabase()
+    {
+      var testStore = new Store("Wet Seal");
+      testStore.Save();
+
+      var result = Store.GetAll();
+      var testList = new List<Store> {testStore};
+      Assert.Equal(testList, result);
     }
 
     public void Dispose()
     {
-      // Store.DeleteAll();
+      Store.DeleteAll();
       // Brand.DeleteAll();
     }
   }
