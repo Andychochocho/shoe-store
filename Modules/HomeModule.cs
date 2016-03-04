@@ -87,6 +87,11 @@ namespace Program.Objects.Shoes
         var allBrands = Brand.GetAll();
         return View["brandsAll.cshtml", allBrands];
       };
+      Get["/brands/delete_all"] =_=> {
+        Brand.DeleteAll();
+        var allBrands = Brand.GetAll();
+        return View["brandsAll.cshtml", allBrands];
+      };
     }
   }
 }
