@@ -80,6 +80,13 @@ namespace Program.Objects.Shoes
         var allBrands = Brand.GetAll();
         return View["brandsAll.cshtml", allBrands];
       };
+
+      Post["/brands/new"] =_=> {
+        Brand newBrand = new Brand(Request.Form["name"]);
+        newBrand.Save();
+        var allBrands = Brand.GetAll();
+        return View["brandsAll.cshtml", allBrands];
+      };
     }
   }
 }
