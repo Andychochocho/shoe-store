@@ -22,6 +22,11 @@ namespace Program.Objects.Shoes
         List<Store> allStores = Store.GetAll();
         return View["stores.cshtml", allStores];
       };
+      Get["/stores/delete_all"]=_=>{
+        Store.DeleteAll();
+        var allStores = Store.GetAll();
+        return View["stores.cshtml", allStores];
+      };
     }
   }
 }
