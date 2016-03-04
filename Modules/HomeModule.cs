@@ -12,21 +12,25 @@ namespace Program.Objects.Shoes
       Get["/"] =_=> {
         return View["index.cshtml"];
       };
+
       Get["/stores"] =_=> {
         List<Store> allStores = Store.GetAll();
         return View["stores.cshtml", allStores];
       };
+
       Post["/stores/new"] =_=> {
         Store newStore = new Store(Request.Form["store-name"]);
         newStore.Save();
         List<Store> allStores = Store.GetAll();
         return View["stores.cshtml", allStores];
       };
+
       Get["/stores/delete_all"]=_=>{
         Store.DeleteAll();
         var allStores = Store.GetAll();
         return View["stores.cshtml", allStores];
       };
+
       Get["stores/{id}"] = parameters => {
         var model = new Dictionary<string, object> ();
         Store selectedStore = Store.Find(parameters.id);
@@ -37,6 +41,7 @@ namespace Program.Objects.Shoes
         model.Add("stores", allStores);
         return View["brands.cshtml", model];
       };
+
       Post["stores/{id}/new"] = parameters => {
         Brand newBrand = new Brand(Request.Form["name"], Request.Form["store-id"]);
         newBrand.Save();
@@ -50,6 +55,18 @@ namespace Program.Objects.Shoes
         model.Add("brands", storeBrand);
         model.Add("stores", allStores);
         return View["brands.cshtml", model];
+      };
+
+      Get["/stores/{id}/edit"] = parameters => {
+        Store selectedStore = Store.Find(parameters.id);
+        return View["store_edit.cshtml", selectedStore];
+      };
+
+      Patch["/stores/{id}/edit"] = parameters => {
+        Store selectedStore = Store.Find(parameters.id);
+        selectedStore.Update(Request.Form["store-name"]);
+        var allStores = Store.GetAll();
+        return View["stores.cshtml", allStores];
       };
     }
   }

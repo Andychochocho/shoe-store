@@ -1,0 +1,11 @@
+<h1>Edit @Model.GetName()</h1>
+<form action="/stores/@Model.GetId()/edit" method="post">
+  <input type="hidden" name="_method" value="PATCH">
+  <input type="hidden" name="brand-id" value="@Model.GetId()">
+  <label for="brand-id">Change Store's Name: </label>
+  <input id="brand-id"  type="text" name="store-name">
+  <button type="submit" name="button">Submit</button>
+</form>
+
+<br>
+<h3><a href="/stores">Return to list of stores</a></h3>
