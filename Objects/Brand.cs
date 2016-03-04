@@ -135,6 +135,88 @@ namespace Program.Objects.Shoes
       return foundBrand;
     }
 
+    public List<Store> GetStores()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT stores.* FROM brands JOIN stores_brands ON (brands.id = stores_brands.brand_id) JOIN stores ON (stores.id = stores_brands.store_id) WHERE brands.id=@BrandsId", conn);
+      var brandIdParameter = new SqlParameter();
+      brandIdParameter.ParameterName = "@BrandsId";
+      brandIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(brandIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      var storesIds = new List<int> {};
+      while(rdr.Read())
+      {
+        int StoreId = rdr.GetInt32(0);
+        storesIds.Add(StoreId);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+
+      var stores = new List<Store>{};
+      foreach(int StoreId in storesIds)
+      {
+        SqlDataReader queryReader = null;
+        SqlCommand storeQuery = new SqlCommand("SELECT * FROM stores WHERE id=@StoreId", conn);
+
+        SqlParameter storeIdParameter = new SqlParameter();
+        storeIdParameter.ParameterName = "@StoreId";
+        storeIdParameter.Value = StoreId;
+        storeQuery.Parameters.Add(storeIdParameter);
+
+        queryReader = storeQuery.ExecuteReader();
+        while(queryReader.Read())
+        {
+          var thisStoreId = queryReader.GetInt32(0);
+          var storeName = queryReader.GetString(1);
+
+          Store foundStore= new Store(storeName, thisStoreId);
+          stores.Add(foundStore);
+        }
+        if (queryReader != null)
+        {
+          queryReader.Close();
+        }
+      }
+        if (conn != null)
+        {
+          conn.Close();
+        }
+      return stores;
+      }
+
+    public void AddStores(Store newStore)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO stores_brands(brand_id, store_id) VALUES (@BrandId, StoreId)", conn);
+
+      var brandIdParameter = new SqlParameter();
+      brandIdParameter.ParameterName = "@BrandId";
+      brandIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(brandIdParameter);
+
+      var storeIdParameter = new SqlParameter();
+      storeIdParameter.ParameterName = "@StoreId";
+      storeIdParameter.Value = newStore.GetId();
+      cmd.Parameters.Add(storeIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

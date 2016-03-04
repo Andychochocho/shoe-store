@@ -1,0 +1,17 @@
+<h2> A list of @Model["brand"].GetName()'s Stores</h2>
+@if (@Model["stores"].Count == 0)
+{
+  <p> I'm sorry! No store under this brand.</p>
+}
+else
+{
+  @foreach(var store in Model["stores"])
+  {
+    <li>
+      <a href="/stores/@store.GetId()">@store.GetName()</a>
+    </li>
+  }
+}
+
+<hr>
+<a href="/brands">Return to list of all brands</a>

@@ -92,6 +92,16 @@ namespace Program.Objects.Shoes
         var allBrands = Brand.GetAll();
         return View["brandsAll.cshtml", allBrands];
       };
+      Get["/brands/{id}"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object> ();
+        Brand selectedBrand = Brand.Find(parameters.id);
+        List<Store> brandStore = selectedBrand.GetStores();
+        List<Brand> allBrands = Brand.GetAll();
+        model.Add("brand", selectedBrand);
+        model.Add("stores", brandStore);
+        model.Add("brands", allBrands);
+        return View["brandStores.cshtml", model];
+      };
     }
   }
 }
