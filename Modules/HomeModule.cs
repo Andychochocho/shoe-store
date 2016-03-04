@@ -75,6 +75,11 @@ namespace Program.Objects.Shoes
         List<Store> allStores = Store.GetAll();
         return View["stores.cshtml", allStores];
       };
+
+      Get["/brands"] =_=> {
+        var allBrands = Brand.GetAll();
+        return View["brandsAll.cshtml", allBrands];
+      };
     }
   }
 }
