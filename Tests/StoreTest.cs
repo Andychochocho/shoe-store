@@ -49,6 +49,16 @@ namespace Program.Objects.Shoes
       Assert.Equal(testId, result);
     }
 
+    [Fact]
+    public void Test_FindStoreInDatabase()
+    {
+      var testStore = new Store("Target");
+      testStore.Save();
+
+      var foundStore = Store.Find(testStore.GetId());
+      Assert.Equal(testStore, foundStore);
+    }
+
     public void Dispose()
     {
       Store.DeleteAll();

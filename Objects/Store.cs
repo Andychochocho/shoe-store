@@ -98,6 +98,40 @@ namespace Program.Objects.Shoes
       }
       return allStore;
     }
+
+    public static Store Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      var cmd = new SqlCommand("SELECT * FROM stores WHERE id=@StoreId", conn);
+      var storeIdParameter = new SqlParameter();
+      storeIdParameter.ParameterName = "@StoreId";
+      storeIdParameter.Value = id;
+      cmd.Parameters.Add(storeIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      int foundStoreId = 0;
+      string foundStoreName = null;
+
+      while(rdr.Read())
+      {
+        foundStoreId = rdr.GetInt32(0);
+        foundStoreName = rdr.GetString(1);
+      }
+      var foundStore = new Store(foundStoreName, foundStoreId);
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      return foundStore;
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
