@@ -68,6 +68,13 @@ namespace Program.Objects.Shoes
         var allStores = Store.GetAll();
         return View["stores.cshtml", allStores];
       };
+
+      Delete["/stores/{id}/delete"] = parameters => {
+        Store selectedStore = Store.Find(parameters.id);
+        selectedStore.Delete();
+        List<Store> allStores = Store.GetAll();
+        return View["stores.cshtml", allStores];
+      };
     }
   }
 }
