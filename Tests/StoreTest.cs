@@ -59,10 +59,30 @@ namespace Program.Objects.Shoes
       Assert.Equal(testStore, foundStore);
     }
 
+    [Fact]
+    public void Test_GetBrand_RetrieveAllBrandsWithStores()
+    {
+      var testStore = new Store("KNYEW");
+      testStore.Save();
+
+      var brandOne = new Brand("Vans");
+      brandOne.Save();
+
+      var brandTwo = new Brand("Slippers");
+      brandTwo.Save();
+
+      testStore.AddBrands(brandOne);
+      testStore.AddBrands(brandTwo);
+
+      var testBrandList = new List<Brand> {brandOne,brandTwo};
+      var resultBrandList = testStore.GetBrands();
+      Assert.Equal(testBrandList, resultBrandList);
+    }
+
     public void Dispose()
     {
       Store.DeleteAll();
-      // Brand.DeleteAll();
+      Brand.DeleteAll();
     }
   }
 }
