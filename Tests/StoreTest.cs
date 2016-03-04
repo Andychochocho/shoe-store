@@ -92,6 +92,22 @@ namespace Program.Objects.Shoes
 
       Assert.Equal(newName, result);
     }
+    [Fact]
+    public void Test_Delete_DeletesStoreFromDatabase()
+    {
+      var name = "Pacsun";
+      var testStoreOne = new Store(name);
+      testStoreOne.Save();
+
+      var newName = "Tillys";
+      var testStoreTwo = new Store(newName);
+      testStoreTwo.Save();
+
+      testStoreOne.Delete();
+      var testStoreList = new List<Store> {testStoreTwo};
+      var result = Store.GetAll();
+      Assert.Equal(testStoreList, result);
+    }
 
     public void Dispose()
     {
