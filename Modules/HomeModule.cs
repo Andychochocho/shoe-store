@@ -16,12 +16,12 @@ namespace Program.Objects.Shoes
         List<Store> allStores = Store.GetAll();
         return View["stores.cshtml", allStores];
       };
-      // Post["/stores/new"] =_=> {
-      //   Store newStore = new Store(Request.Form["store-name"]);
-      //   newStore.Save();
-      //   List<Store> allStores = Store.GetAll();
-      //   return View["stores.cshtml", allStores];
-      // };
+      Post["/stores/new"] =_=> {
+        Store newStore = new Store(Request.Form["store-name"]);
+        newStore.Save();
+        List<Store> allStores = Store.GetAll();
+        return View["stores.cshtml", allStores];
+      };
     }
   }
 }
