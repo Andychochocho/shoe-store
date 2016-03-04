@@ -18,6 +18,14 @@ namespace Program.Objects.Shoes
       var result = Brand.GetAll().Count;
       Assert.Equal(0, result);
     }
+    [Fact]
+    public void Test_CheckIfBrandsAreSame()
+    {
+      var brandOne = "Nike";
+      var brandTwo = "Nike";
+      Assert.Equal(brandOne, brandTwo);
+    }
+
     public void Dispose()
     {
       // Book.DeleteAll();
