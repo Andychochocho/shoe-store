@@ -18,6 +18,13 @@ namespace Program.Objects.Shoes
       int result = Store.GetAll().Count;
       Assert.Equal(0, result);
     }
+    [Fact]
+    public void Test_CheckIfNameIsSame()
+    {
+      string storeOne = "Forever 21";
+      string storeTwo = "Forever 21";
+      Assert.Equal(storeOne, storeTwo);
+    }
 
     public void Dispose()
     {
