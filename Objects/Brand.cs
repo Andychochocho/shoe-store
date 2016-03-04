@@ -16,6 +16,22 @@ namespace Program.Objects.Shoes
       _name = name;
     }
 
+    public override bool Equals(System.Object otherBrand)
+    {
+      if(!(otherBrand is Brand))
+      {
+        return false;
+      }
+      else
+      {
+        var newBrand = (Brand) otherBrand;
+        bool idEquality = this.GetId() == newBrand.GetId();
+        bool nameEqualuity = this.GetName() == newBrand.GetName();
+
+        return(idEquality && nameEqualuity);
+      }
+    }
+
     public int GetId()
     {
       return _id;
@@ -54,6 +70,42 @@ namespace Program.Objects.Shoes
         conn.Close();
       }
       return allBrands;
+    }
+
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO brands(name) OUTPUT INSERTED.id VALUES (@Name);", conn);
+      var nameParameter = new SqlParameter();
+      nameParameter.ParameterName = "@Name";
+      nameParameter.Value = this.GetName();
+
+      cmd.Parameters.Add(nameParameter);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+    }
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = new SqlCommand("DELETE FROM brands;", conn);
+      cmd.ExecuteNonQuery();
     }
   }
 }

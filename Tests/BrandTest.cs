@@ -18,6 +18,7 @@ namespace Program.Objects.Shoes
       var result = Brand.GetAll().Count;
       Assert.Equal(0, result);
     }
+
     [Fact]
     public void Test_CheckIfBrandsAreSame()
     {
@@ -26,9 +27,20 @@ namespace Program.Objects.Shoes
       Assert.Equal(brandOne, brandTwo);
     }
 
+    [Fact]
+    public void Test_Save_CheckIfBrandsSavesToDatabase()
+    {
+      var testBrand = new Brand("Osiris");
+      testBrand.Save();
+
+      var result = Brand.GetAll();
+      var testList = new List<Brand> {testBrand};
+      Assert.Equal(testList, result);
+    }
+
     public void Dispose()
     {
-      // Book.DeleteAll();
+      Brand.DeleteAll();
       // Author.DeleteAll();
     }
   }
