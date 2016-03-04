@@ -102,6 +102,20 @@ namespace Program.Objects.Shoes
         model.Add("brands", allBrands);
         return View["brandStores.cshtml", model];
       };
+      Post["/brands/{id}/new"] =parameters=> {
+        var newStore = new Store(Request.Form["name"], Request.Form["brand-id"]);
+        newStore.Save();
+
+        var model = new Dictionary<string, object>();
+        Brand selectedBrand = Brand.Find(Request.Form["brand-id"]);
+        selectedBrand.AddStores(newStore);
+        var storeBrand = selectedBrand.GetStores();
+        var allBrands = Brand.GetAll();
+        model.Add("brand", selectedBrand);
+        model.Add("stores", storeBrand);
+        model.Add("brands", allBrands);
+        return View["brandStores.cshtml",model];
+      };
     }
   }
 }

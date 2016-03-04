@@ -43,7 +43,7 @@ namespace Program.Objects.Shoes
     {
       var testBrand = new Brand("DC");
       testBrand.Save();
-      
+
       var foundBrand = Brand.Find(testBrand.GetId());
       Assert.Equal(testBrand, foundBrand);
     }
@@ -51,7 +51,7 @@ namespace Program.Objects.Shoes
     public void Dispose()
     {
       Brand.DeleteAll();
-      // Author.DeleteAll();
+      Store.DeleteAll();
     }
   }
 }

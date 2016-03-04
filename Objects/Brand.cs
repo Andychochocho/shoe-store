@@ -197,7 +197,7 @@ namespace Program.Objects.Shoes
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO stores_brands(brand_id, store_id) VALUES (@BrandId, StoreId)", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO stores_brands(brand_id, store_id) VALUES (@BrandId, @StoreId)", conn);
 
       var brandIdParameter = new SqlParameter();
       brandIdParameter.ParameterName = "@BrandId";
