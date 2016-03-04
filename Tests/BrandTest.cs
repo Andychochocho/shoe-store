@@ -38,6 +38,16 @@ namespace Program.Objects.Shoes
       Assert.Equal(testList, result);
     }
 
+    [Fact]
+    public void Test_FindBrandInDatabase()
+    {
+      var testBrand = new Brand("DC");
+      testBrand.Save();
+      
+      var foundBrand = Brand.Find(testBrand.GetId());
+      Assert.Equal(testBrand, foundBrand);
+    }
+
     public void Dispose()
     {
       Brand.DeleteAll();

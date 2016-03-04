@@ -99,6 +99,42 @@ namespace Program.Objects.Shoes
         rdr.Close();
       }
     }
+
+    public static Brand Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      var cmd = new SqlCommand("SELECT * FROM brands WHERE id=@BrandId", conn);
+      var brandIdParameter = new SqlParameter();
+      brandIdParameter.ParameterName = "@BrandId";
+      brandIdParameter.Value = id;
+      cmd.Parameters.Add(brandIdParameter);
+
+      rdr= cmd.ExecuteReader();
+
+      int foundBrandId = 0;
+      string foundBrandName = null;
+
+      while (rdr.Read())
+      {
+        foundBrandId = rdr.GetInt32(0);
+        foundBrandName = rdr.GetString(1);
+      }
+      var foundBrand = new Brand(foundBrandName, foundBrandId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundBrand;
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
