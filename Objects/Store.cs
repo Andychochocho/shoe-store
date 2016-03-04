@@ -213,6 +213,39 @@ namespace Program.Objects.Shoes
       }
     }
 
+    public void Update(string newStoreName)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      var cmd = new SqlCommand("UPDATE stores SET name=@newStoreName OUTPUT INSERTED.name WHERE id=@StoreId;", conn);
+
+      var newStoreParameter = new SqlParameter();
+      newStoreParameter.ParameterName = "@newStoreName";
+      newStoreParameter.Value = newStoreName;
+      cmd.Parameters.Add(newStoreParameter);
+
+      var storeIdParameter = new SqlParameter();
+      storeIdParameter.ParameterName = "@StoreId";
+      storeIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(storeIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._name = rdr.GetString(0);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

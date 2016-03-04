@@ -79,6 +79,20 @@ namespace Program.Objects.Shoes
       Assert.Equal(testBrandList, resultBrandList);
     }
 
+    [Fact]
+    public void Test_Updates_UpdatesStoreFromDatabase()
+    {
+      var name = "H&M";
+      var testStoreOne = new Store(name);
+      testStoreOne.Save();
+
+      var newName = "Macys";
+      testStoreOne.Update(newName);
+      var result = testStoreOne.GetName();
+
+      Assert.Equal(newName, result);
+    }
+
     public void Dispose()
     {
       Store.DeleteAll();
