@@ -8,7 +8,13 @@ else
   @foreach(var store in Model["stores"])
   {
     <li>
-      <a href="/stores/@store.GetId()">@store.GetName()</a>
+      <a href="/stores/@store.GetId()">@store.GetName()</a> |
+      <a href="/stores/@store.GetId()/edit">Edit</a> |
+      <form action="/stores/@store.GetId()/delete" method="post">
+        <label>Delete your store</label>
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit" name="button">Delete</button>
+      </form>
     </li>
   }
 }
