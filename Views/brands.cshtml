@@ -12,3 +12,19 @@ else
 }
 
 <a href="/stores">Return to the list of all stores</a>
+
+<hr>
+<form action='/stores/@Model["store"].GetId()/new' method="post">
+  <label for="name">Name: </label>
+  <input id="name" type="text" name="name">
+  <br><br>
+  <label for="store-id">Store: </label>
+  <select name="store-id">
+    @foreach(var store in @Model["stores"])
+    {
+      <option value="@store.GetId()">@store.GetName()</option>
+    }
+  </select>
+  <br><br>
+  <button type="submit">Add brand</button>
+</form>
