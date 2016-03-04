@@ -37,6 +37,18 @@ namespace Program.Objects.Shoes
       Assert.Equal(testList, result);
     }
 
+    [Fact]
+    public void Test_AssignsIdToStore()
+    {
+      var testStore = new Store("Walmart");
+      testStore.Save();
+
+      var savedStore = Store.GetAll()[0];
+      var result = savedStore.GetId();
+      var testId = testStore.GetId();
+      Assert.Equal(testId, result);
+    }
+
     public void Dispose()
     {
       Store.DeleteAll();
