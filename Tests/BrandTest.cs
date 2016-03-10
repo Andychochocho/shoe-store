@@ -37,6 +37,19 @@ namespace Program.Objects.Shoes
       var testList = new List<Brand> {testBrand};
       Assert.Equal(testList, result);
     }
+    
+    
+    [Fact]
+    public void Test_AssignsIdToBrand()
+    {
+      var testBrand = new Brand("Victoria Secret");
+      testBrand.Save();
+
+      var savedBrand = Brand.GetAll()[0];
+      var result = savedBrand.GetId();
+      var testId = testBrand.GetId();
+      Assert.Equal(testId, result);
+    }
 
     [Fact]
     public void Test_FindBrandInDatabase()
@@ -46,6 +59,26 @@ namespace Program.Objects.Shoes
 
       var foundBrand = Brand.Find(testBrand.GetId());
       Assert.Equal(testBrand, foundBrand);
+    }
+    
+    [Fact]
+    public void Test_GetStore_RetrieveAllBrandsWithStores()
+    {
+      var testBrand = new Brand("Baby Gap");
+      testBrand.Save();
+
+      var storeOne = new Store("Hot Topic");
+      storeOne.Save();
+
+      var storeTwo = new Store("American apparallel");
+      storeTwo.Save();
+
+      testBrand.AddStores(storeOne);
+      testBrand.AddStores(storeTwo);
+
+      var testStoreList = new List<Store> {storeOne,storeTwo};
+      var resultStoreList = testBrand.GetStores();
+      Assert.Equal(testStoreList, resultStoreList);
     }
 
     public void Dispose()

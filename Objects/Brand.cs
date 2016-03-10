@@ -142,49 +142,29 @@ namespace Program.Objects.Shoes
       conn.Open();
 
       SqlCommand cmd = new SqlCommand("SELECT stores.* FROM brands JOIN stores_brands ON (brands.id = stores_brands.brand_id) JOIN stores ON (stores.id = stores_brands.store_id) WHERE brands.id=@BrandsId", conn);
+      
       var brandIdParameter = new SqlParameter();
       brandIdParameter.ParameterName = "@BrandsId";
       brandIdParameter.Value = this.GetId();
       cmd.Parameters.Add(brandIdParameter);
 
       rdr = cmd.ExecuteReader();
+      
+      List<Store> stores = new List<Store> {};
 
-      var storesIds = new List<int> {};
-      while(rdr.Read())
-      {
-        int StoreId = rdr.GetInt32(0);
-        storesIds.Add(StoreId);
-      }
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-
-      var stores = new List<Store>{};
-      foreach(int StoreId in storesIds)
-      {
-        SqlDataReader queryReader = null;
-        SqlCommand storeQuery = new SqlCommand("SELECT * FROM stores WHERE id=@StoreId", conn);
-
-        SqlParameter storeIdParameter = new SqlParameter();
-        storeIdParameter.ParameterName = "@StoreId";
-        storeIdParameter.Value = StoreId;
-        storeQuery.Parameters.Add(storeIdParameter);
-
-        queryReader = storeQuery.ExecuteReader();
-        while(queryReader.Read())
+        while(rdr.Read())
         {
-          var thisStoreId = queryReader.GetInt32(0);
-          var storeName = queryReader.GetString(1);
+          var thisStoreId = rdr.GetInt32(0);
+          var storeName = rdr.GetString(1);
 
           Store foundStore= new Store(storeName, thisStoreId);
           stores.Add(foundStore);
         }
-        if (queryReader != null)
+        if (rdr != null)
         {
-          queryReader.Close();
+          rdr.Close();
         }
-      }
+      
         if (conn != null)
         {
           conn.Close();

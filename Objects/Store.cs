@@ -139,49 +139,29 @@ namespace Program.Objects.Shoes
       conn.Open();
 
       SqlCommand cmd = new SqlCommand("SELECT brands.* FROM stores JOIN stores_brands ON (stores.id = stores_brands.store_id) JOIN brands ON (brands.id = stores_brands.brand_id) WHERE stores.id =@StoreId;",conn);
+      
       SqlParameter StoreIdParameter = new SqlParameter();
       StoreIdParameter.ParameterName = "@StoreId";
       StoreIdParameter.Value = this.GetId();
       cmd.Parameters.Add(StoreIdParameter);
 
       rdr = cmd.ExecuteReader();
+      
+      List<Brand> brands = new List<Brand> {};
 
-      var brandIds = new List<int> {};
-      while(rdr.Read())
-      {
-        int BrandId = rdr.GetInt32(0);
-        brandIds.Add(BrandId);
-      }
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-
-      var brands = new List<Brand> {};
-      foreach(int BrandId in brandIds)
-      {
-        SqlDataReader queryReader = null;
-        SqlCommand brandQuery = new SqlCommand("SELECT * FROM brands WHERE id =@BrandId", conn);
-
-        SqlParameter brandIdParameter = new SqlParameter();
-        brandIdParameter.ParameterName = "@BrandId";
-        brandIdParameter.Value= BrandId;
-        brandQuery.Parameters.Add(brandIdParameter);
-
-        queryReader = brandQuery.ExecuteReader();
-        while (queryReader.Read())
+        while (rdr.Read())
         {
-          int thisBrandId = queryReader.GetInt32(0);
-          string brandName = queryReader.GetString(1);
+            int thisBrandId = rdr.GetInt32(0);
+            string brandName = rdr.GetString(1);
 
-          Brand foundBrand = new Brand(brandName, thisBrandId);
-          brands.Add(foundBrand);
+            Brand foundBrand = new Brand(brandName, thisBrandId);
+            brands.Add(foundBrand);
         }
-        if(queryReader != null)
+        if(rdr != null)
         {
-          queryReader.Close();
+            rdr.Close();
         }
-      }
+        
       if (conn != null)
       {
         conn.Close();
